@@ -35,7 +35,15 @@ export default function LoginPage() {
       toast.success("Login realizado com sucesso");
       router.push("/");
     } catch (err) {
-      toast.error(getApiErrorMessage(err, "Email ou senha inválidos"));
+      const status = (err as { response?: { status?: number } })?.response
+        ?.status;
+      if (status === 405) {
+        toast.error(
+          "Erro 405: a requisição não chegou à API. Confira a variável NEXT_PUBLIC_API_URL na Vercel (deve ser a URL do backend terminando em /api) e faça redeploy."
+        );
+      } else {
+        toast.error(getApiErrorMessage(err, "Email ou senha inválidos"));
+      }
     } finally {
       setSubmitting(false);
     }

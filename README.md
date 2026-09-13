@@ -80,6 +80,12 @@ Notas:
 - Se o front for acessado de outro domínio e a API bloquear CORS, libere o domínio do front no backend.
 - Se a API na Vercel estiver com Deployment Protection ativada, o front não conseguirá chamá-la sem bypass — desative em *Project Settings → Deployment Protection* no projeto do backend.
 
+## Problemas comuns
+
+- **POST /login retorna 405 Method Not Allowed**: a requisição está caindo no próprio front em vez da API (página Next só aceita GET). Abra o DevTools → Network → clique no POST com falha e veja a **Request URL**:
+  - Se for `https://<seu-front>.vercel.app/login`, a `NEXT_PUBLIC_API_URL` está errada/ausente no build. Confira na Vercel que ela vale `https://<seu-backend>.vercel.app/api` (terminando em `/api`, sem `/docs`), marcada para **Production**, e faça **Redeploy sem cache**.
+  - Se a Request URL já for a do backend e o 405 persistir, o problema está no backend (rota `POST /login` não registrada ou rewrite da Vercel capturando a rota).
+
 ## Critérios de aceite
 
 - Login admin/user persiste; guards por role.
