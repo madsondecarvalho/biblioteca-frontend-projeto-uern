@@ -44,7 +44,7 @@ Estrutura:
 - `src/test/` — fixtures compartilhadas e helper de render com `QueryClientProvider`.
 - `vitest.setup.ts` — `jest-dom`, limpeza de mocks/localStorage entre testes.
 
-O workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) roda em todo push/PR para `main`: instala com `npm ci`, executa lint, verificação de tipos, testes com cobertura e build de produção. O relatório de cobertura fica disponível como artifact da execução.
+O workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) roda em todo push/PR para `main`: instala com `npm ci`, executa lint, verificação de tipos, testes com cobertura e build de produção. Em pushes para `main`, após o sucesso do job `quality`, o job `deploy` dispara o webhook do Render. O relatório de cobertura fica disponível como artifact da execução.
 
 
 ## Funcionalidades
@@ -78,9 +78,24 @@ O workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) roda em todo p
 NEXT_PUBLIC_API_URL=http://localhost:3333/api
 ```
 
-## Deploy na Vercel
+## Deploy no Render
 
-O projeto já está pronto para deploy (Next.js com defaults, `npm run build` validado).
+O deploy de produção é disparado pelo CI **somente depois** que lint, verificação de tipos, testes e build passam em um push para `main`.
+
+1. No Render, abra o serviço → **Settings → Deploy Hook** e copie a URL do webhook.
+2. No GitHub, vá em **Settings → Secrets and variables → Actions → New repository secret** e cadastre:
+   - **Name:** `RENDER_DEPLOY_HOOK_URL`
+   - **Secret:** a URL completa do deploy hook do Render
+3. Cada push em `main` que passar pelo job `quality` executa o job `deploy`, que faz um `POST` nessa URL.
+4. Se o Render estiver com **Auto-Deploy** habilitado, desative para evitar dois deploys (um automático e outro via CI).
+
+> O secret não aparece nos logs. Se ele não estiver cadastrado, o job `deploy` falha com uma mensagem explícita.
+
+No Render, configure também a variável `NEXT_PUBLIC_API_URL` apontando para a API. Por ser `NEXT_PUBLIC_*`, ela é embutida no bundle durante o build.
+
+## Deploy na Vercel (alternativa)
+
+O projeto também pode ser publicado na Vercel:
 
 1. Suba o código para o GitHub:
    ```bash

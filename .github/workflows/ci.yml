@@ -56,3 +56,31 @@ jobs:
           path: coverage/
           if-no-files-found: ignore
           retention-days: 7
+
+  deploy:
+    name: Deploy no Render
+    needs: quality
+    if: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Validar secret do Render
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          set -euo pipefail
+          if [ -z "${RENDER_DEPLOY_HOOK_URL}" ]; then
+            echo "::error title=Secret ausente::Cadastre RENDER_DEPLOY_HOOK_URL em Settings > Secrets and variables > Actions."
+            exit 1
+          fi
+
+      - name: Disparar deploy no Render
+        env:
+          RENDER_DEPLOY_HOOK_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --max-time 30 \
+            --request POST \
+            "${RENDER_DEPLOY_HOOK_URL}"
+          echo "Deploy do Render disparado com sucesso."
