@@ -46,6 +46,8 @@ Estrutura:
 
 O workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) roda em todo push/PR para `main`: instala com `npm ci`, executa lint, verificação de tipos, testes com cobertura e build de produção. Em pushes para `main`, após o sucesso do job `quality`, o job `deploy` dispara o webhook do Render. O relatório de cobertura fica disponível como artifact da execução.
 
+A documentação detalhada do pipeline está em [`docs/CI.md`](docs/CI.md).
+
 
 ## Funcionalidades
 
