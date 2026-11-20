@@ -1,5 +1,7 @@
 # Biblioteca UERN — Frontend (Next.js)
 
+[![CI](https://github.com/madsondecarvalho/biblioteca-frontend-projeto-uern/actions/workflows/ci.yml/badge.svg)](https://github.com/madsondecarvalho/biblioteca-frontend-projeto-uern/actions/workflows/ci.yml)
+
 Frontend completo em **Next.js (App Router) + TypeScript + Tailwind CSS** para a **Biblioteca API** (`http://localhost:3333/api`, OpenAPI 3.0.0, docs em `/api/docs`).
 
 ## Requisitos
@@ -23,6 +25,27 @@ Abra [http://localhost:3000](http://localhost:3000) e faça login com seu usuár
 npm run build
 npm start
 ```
+
+## Testes
+
+Testes unitários e de componentes com **Vitest + React Testing Library**.
+
+```bash
+npm test               # executa toda a suíte uma vez
+npm run test:watch     # modo watch
+npm run test:coverage  # cobertura (relatório HTML em coverage/)
+```
+
+Estrutura:
+
+- `src/__tests__/app/` — uma suíte para cada tela (`login`, dashboard, livros, detalhe/novo/edição de livro, autores, categorias, cópias, reservas, usuários e 404).
+- `src/__tests__/components/` — guards, paginação e shell da aplicação.
+- `src/__tests__/lib/` — schemas, services, hooks, contexto de auth, API, tipos e utilitários.
+- `src/test/` — fixtures compartilhadas e helper de render com `QueryClientProvider`.
+- `vitest.setup.ts` — `jest-dom`, limpeza de mocks/localStorage entre testes.
+
+O workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) roda em todo push/PR para `main`: instala com `npm ci`, executa lint, verificação de tipos, testes com cobertura e build de produção. O relatório de cobertura fica disponível como artifact da execução.
+
 
 ## Funcionalidades
 
