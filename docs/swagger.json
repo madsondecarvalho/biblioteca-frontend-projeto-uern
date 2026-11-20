@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "description": "API de gerenciamento de biblioteca com CRUD de livros, autores, categorias, cópias, reservas, usuários e autenticação JWT. Fonte da verdade para o frontend em Next.js deste repositório."
   },
-  "servers": [{ "url": "http://localhost:3333/api", "description": "Produção (Vercel)" }],
+  "servers": [{ "url": "http://localhost:3333/api", "description": "Desenvolvimento local" }],
   "tags": [
     { "name": "Auth" },
     { "name": "Books" },

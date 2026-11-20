@@ -2,18 +2,18 @@
 
 [![CI](https://github.com/madsondecarvalho/biblioteca-frontend-projeto-uern/actions/workflows/ci.yml/badge.svg)](https://github.com/madsondecarvalho/biblioteca-frontend-projeto-uern/actions/workflows/ci.yml)
 
-Frontend completo em **Next.js (App Router) + TypeScript + Tailwind CSS** para a **Biblioteca API** (`http://localhost:3333/api`, OpenAPI 3.0.0, docs em `/api/docs`).
+Frontend completo em **Next.js (App Router) + TypeScript + Tailwind CSS** para a **Biblioteca API** (OpenAPI 3.0.0, docs em `/api/docs`). A URL da API é configurada em `NEXT_PUBLIC_API_URL`.
 
 ## Requisitos
 
 - Node 18+
-- Backend acessível em `http://localhost:3333/api`
+- Backend acessível na URL configurada em `NEXT_PUBLIC_API_URL` (ex.: `http://localhost:3333/api`)
 
 ## Como rodar
 
 ```bash
 npm i
-cp .env.example .env.local   # já aponta para a API na Vercel
+cp .env.example .env.local   # já aponta para a API local
 npm run dev
 ```
 
@@ -108,7 +108,7 @@ O projeto também pode ser publicado na Vercel:
 2. Em [vercel.com/new](https://vercel.com/new), importe o repositório. O framework **Next.js** é detectado automaticamente (build: `npm run build`, output: `.next`).
 3. Em **Settings → Environment Variables**, adicione (nos 3 ambientes: Production, Preview e Development):
    ```
-   NEXT_PUBLIC_API_URL=http://localhost:3333/api
+   NEXT_PUBLIC_API_URL=https://<url-do-backend>/api
    ```
    > Importante: por ser `NEXT_PUBLIC_*`, o valor é embutido no bundle **no momento do build**. Se alterar a variável depois, faça **Redeploy** (sem cache) para valer.
 4. Deploy. Cada push em `main` gera um novo deploy de produção automaticamente.
